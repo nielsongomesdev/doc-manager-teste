@@ -5,4 +5,5 @@ const documentController = new DocumentController();
 
 export async function documentRoutes(app: FastifyInstance) {
   app.post("/documents", documentController.create);
+  app.get("/documents", documentController.list);
 }

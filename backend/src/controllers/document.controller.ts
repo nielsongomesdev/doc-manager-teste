@@ -3,7 +3,7 @@ import { DocumentService } from "@/services/document.service";
 
 const documentService = new DocumentService();
 
-export class DocumentController {async create(request: FastifyRequest, reply: FastifyReply) {
+export class DocumentController { async create(request: FastifyRequest, reply: FastifyReply) {
     try {
       const { title, description } = request.body as {
         title: string;
@@ -24,6 +24,18 @@ export class DocumentController {async create(request: FastifyRequest, reply: Fa
       return reply
         .status(500)
         .send({ error: "Erro interno ao criar o documento." });
+    }
+  }
+
+  async list(request: FastifyRequest, reply: FastifyReply) {
+    try {
+      const documents = await documentService.list();
+      return reply.send(documents);
+    } catch (error) {
+      console.error("Erro ao listar documentos:", error);
+      return reply
+        .status(500)
+        .send({ error: "Erro interno ao listar os documentos." });
     }
   }
 }
