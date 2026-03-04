@@ -1,24 +1,31 @@
 import { prisma } from "@/utils/prisma";
-import { CreateDocumentData } from "@/types";
+import { CreateDocumentData, UpdateDocumentStatusData } from "@/types";
 
 export class DocumentService { async create(data: CreateDocumentData) {
-    const document = await prisma.documento.create({
+    return await prisma.documento.create({
       data: {
         titulo: data.title,
         descricao: data.description,
       },
     });
-
-    return document;
   }
 
   async list() {
-    const documents = await prisma.documento.findMany({
-      orderBy: {
-        criado_em: "desc",
-      },
+    return await prisma.documento.findMany({
+      orderBy: { criado_em: "desc" },
     });
+  }
 
-    return documents;
+  async updateStatus(data: UpdateDocumentStatusData) {
+    return await prisma.documento.update({
+      where: { id: data.id },
+      data: { status: data.status },
+    });
+  }
+
+  async delete(id: string) {
+    return await prisma.documento.delete({
+      where: { id },
+    });
   }
 }
